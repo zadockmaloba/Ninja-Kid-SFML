@@ -7,20 +7,19 @@
 class Player : public sf::Sprite 
 {
 public:
-	Player (sf::RenderWindow* win, sf::Vector2f loc, Background* bg = nullptr);
+	Player (sf::RenderWindow* win, sf::Vector2f loc);
 	~Player ();
 	void playerAnimation(float deltaTime, std::string action);
 	void movement(sf::Vector2f deltaLoc);
+	bool faceBack;
 
 private:
-	Background* backG;
-	bool faceBack;
 	int walkingRate = 3, runningRate=3, jumpPower=10;
 	sf::Vector2f playerLoc, bgLoc;
 	sf::Texture plyrTexture;
 	std::string txtDir = "textures/player/";
 	int imageCount = 9, imgIndex = 0;
-	float switchTime = 0.06f, totalTime = 0.0f, atotalTime = 0.0f;
+	float switchTime = 0.06f, totalTime = 0.0f;
 	std::vector<std::string> animCallback;
 	std::vector<std::string> idleAnimText{
 		txtDir + "Idle__000.png",txtDir + "Idle__001.png",txtDir + "Idle__002.png",txtDir + "Idle__003.png",
@@ -36,12 +35,13 @@ private:
 		txtDir + "Run__007.png",txtDir + "Run__008.png",txtDir + "Run__009.png" };
 };
 
-inline Player::Player(sf::RenderWindow* win, sf::Vector2f loc, Background* bg)
+inline Player::Player(sf::RenderWindow* win, sf::Vector2f loc)
 	:
-	playerLoc(loc), faceBack(false), bgLoc(bg->getPosition()), backG(bg)
+	playerLoc(loc), faceBack(true)
 {
 	this->move(playerLoc);
 	this->setScale(0.2, 0.2);
+	
 }
 
 inline Player ::~Player ()
@@ -53,6 +53,8 @@ inline void Player::playerAnimation(float deltaTime, std::string action)
 	if (action == "attack")  animCallback = attackAnimText;
 	if (action == "walk") animCallback = runAnimText;
 	else if (action == "") animCallback = idleAnimText;
+
+	if (faceBack)this->scale(-1, 1);
 	totalTime += deltaTime;
 	if (totalTime >= switchTime)
 	{
@@ -61,19 +63,14 @@ inline void Player::playerAnimation(float deltaTime, std::string action)
 		this->setTexture(plyrTexture, true);
 		imgIndex++;
 		if (imgIndex >= 10) {
-			imgIndex = 0;
-		}
+			imgIndex = 0;}
 	}
 }
 
 inline void Player::movement(sf::Vector2f deltaLoc)
 {
-	//playerLoc = this->getPosition();
 	playerLoc.x += (walkingRate * deltaLoc.x);
 	playerLoc.y += (jumpPower * deltaLoc.y);
-	bgLoc.x -= (walkingRate * deltaLoc.x);
-	bgLoc.y -= (jumpPower * deltaLoc.y);
-	if(bgLoc.x < 0) backG->setPosition(bgLoc);
 	this->setPosition(playerLoc);
 }
 

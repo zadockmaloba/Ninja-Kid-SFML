@@ -5,26 +5,32 @@
 class Background : public sf::Sprite
 {
 public:
-	Background(sf::RenderWindow* win);
+	Background(sf::RenderWindow* win, std::string dir, float spd=3);
 	~Background();
+	void parallaxMvmnt(sf::Vector2f deltaLoc);
 
 private:
+	float mvmntRate;
 	sf::Texture bgImage;
 	std::string txtDir = "textures/BG/";
+	sf::Vector2f bgLoc;
 };
 
-inline Background::Background(sf::RenderWindow* win)
+inline Background::Background(sf::RenderWindow* win, std::string dir, float spd) : mvmntRate(spd)
 {
-	bgImage.loadFromFile(txtDir + "woods_1.jpg");
-	bgImage.setSmooth(true);
+	bgImage.loadFromFile(txtDir + dir);
 	sf::IntRect uvRect;
-	this->setTextureRect(uvRect);
-	uvRect.top = 200;
 	this->setTexture(bgImage);
-	this->move(0, -300);
-	//this->scale(win->getSize().x /2, win->getSize().y /2);
 }
 
 inline Background::~Background()
 {
+}
+
+inline void Background::parallaxMvmnt(sf::Vector2f deltaLoc)
+{
+	bgLoc = this->getPosition();
+	bgLoc.x -= (mvmntRate * deltaLoc.x);
+	//bgLoc.y -= (jumpPower * deltaLoc.y);
+	if (bgLoc.x < 0) this->setPosition(bgLoc);
 }
