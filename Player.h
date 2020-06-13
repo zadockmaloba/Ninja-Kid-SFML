@@ -54,7 +54,7 @@ inline void Player::playerAnimation(float deltaTime, std::string action)
 	if (action == "walk") animCallback = runAnimText;
 	else if (action == "") animCallback = idleAnimText;
 
-	if (faceBack)this->scale(-1, 1);
+	//if (faceBack)this->scale(-1, 1);
 	totalTime += deltaTime;
 	if (totalTime >= switchTime)
 	{
@@ -71,6 +71,8 @@ inline void Player::movement(sf::Vector2f deltaLoc)
 {
 	playerLoc.x += (walkingRate * deltaLoc.x);
 	playerLoc.y += (jumpPower * deltaLoc.y);
+	if (deltaLoc.x < 0)this->setScale(-0.2, 0.2);
+	else if (deltaLoc.x >= 0) this->setScale(0.2, 0.2);
 	this->setPosition(playerLoc);
 }
 
