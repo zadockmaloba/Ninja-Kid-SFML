@@ -35,7 +35,7 @@ void gameLoop(sf::RenderWindow* win)
 		//draw objects**************
 		win->draw(bg);
 		win->draw(bg2);
-		win->draw(bg3);
+		win->draw(bg3, sf::BlendAdd);
 		win->draw(ply);
 		//***************************
 
