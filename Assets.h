@@ -1,34 +1,33 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-#include <iostream>
 
-class Background : public sf::Sprite
+class Assets : public sf::Sprite
 {
 public:
-	Background(sf::RenderWindow* win, std::string dir, float spd=3);
-	~Background();
+	Assets(sf::RenderWindow* win, std::string dir, float spd = 3);
+	~Assets();
 	void parallaxMvmnt(sf::Vector2f deltaLoc);
 	sf::Vector2u spriteSize();
 
 private:
 	float mvmntRate;
 	sf::Texture bgImage;
-	std::string txtDir = "textures/BG/";
+	std::string txtDir = "textures/assets/";
 	sf::Vector2f bgLoc;
 };
 
-inline Background::Background(sf::RenderWindow* win, std::string dir, float spd) : mvmntRate(spd)
+inline Assets::Assets(sf::RenderWindow* win, std::string dir, float spd) : mvmntRate(spd)
 {
 	bgImage.loadFromFile(txtDir + dir);
 	sf::IntRect uvRect;
 	this->setTexture(bgImage);
 }
 
-inline Background::~Background()
+inline Assets::~Assets()
 {
 }
 
-inline void Background::parallaxMvmnt(sf::Vector2f deltaLoc)
+inline void Assets::parallaxMvmnt(sf::Vector2f deltaLoc)
 {
 	bgLoc = this->getPosition();
 	bgLoc.x -= (mvmntRate * deltaLoc.x);
@@ -36,7 +35,7 @@ inline void Background::parallaxMvmnt(sf::Vector2f deltaLoc)
 	if (bgLoc.x < 0) this->setPosition(bgLoc);
 }
 
-inline sf::Vector2u Background::spriteSize()
+inline sf::Vector2u Assets::spriteSize()
 {
 	return bgImage.getSize();
 }

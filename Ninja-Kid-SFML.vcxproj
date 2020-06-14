@@ -148,6 +148,7 @@
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Assets.h" />
     <ClInclude Include="Background.h" />
     <ClInclude Include="LevelDesign.h" />
     <ClInclude Include="Player.h" />
