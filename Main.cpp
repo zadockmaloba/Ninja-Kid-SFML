@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include "Player.h"
 #include "Background.h"
+#include "Assets.h"
 
 static void gameLoop(sf::RenderWindow* win);
 //Background bgEdit();
@@ -13,14 +14,18 @@ int main()
 
 void gameLoop(sf::RenderWindow* win)
 {
-	Background bg(win, "woods_view2.png", 2.0);
-	Background bg2(win, "glacial/Layers/nuvens_2.png", 2.0);
+	Background bg(win, "woods_1.jpg", 2.0);
+	Background bg2(win, "woods_view2.png", 3.0);
 	Background bg3(win, "glacial/Layers/nuvens_1.png");
-	bg2.move(0, 100);
+	bg2.move(0, -50);
 	bg3.move(0, 100);
 	bg.scale(1, 0.5);
-	bg2.scale(3, 2);
+	bg2.scale(1,0.8);
 	bg3.scale(3, 2);
+
+	Assets tree(win, "vegetation/tree_1.png", 3.5);
+	tree.move(100, 270);
+	tree.scale(0.4, 0.4);
 
 	Player ply(win, {100,450});
 	sf::Clock clock;
@@ -35,8 +40,9 @@ void gameLoop(sf::RenderWindow* win)
 
 		//draw objects**************
 		win->draw(bg);
-		//win->draw(bg2);
+		win->draw(bg2, sf::BlendMultiply);
 		//win->draw(bg3, sf::BlendAdd);
+		//win->draw(tree, sf::BlendAlpha);
 		win->draw(ply);
 		//***************************
 
@@ -51,6 +57,7 @@ void gameLoop(sf::RenderWindow* win)
 					bg.parallaxMvmnt({ 1,0 });
 					bg2.parallaxMvmnt({ 1,0 });
 					bg3.parallaxMvmnt({1,0});
+					tree.parallaxMvmnt({ 1,0 });
 					ply.movement({ 1,0 });
 					playerAction = "walk";}
 				if (event.key.code == sf::Keyboard::Left) {
@@ -58,6 +65,7 @@ void gameLoop(sf::RenderWindow* win)
 					bg.parallaxMvmnt({ -1,0 });
 					bg2.parallaxMvmnt({ -1,0 });
 					bg3.parallaxMvmnt({ -1,0 });
+					tree.parallaxMvmnt({ -1,0 });
 					ply.movement({ -1,0 });
 					playerAction = "walk";}
 			}
